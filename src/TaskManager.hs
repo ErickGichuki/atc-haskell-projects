@@ -24,6 +24,16 @@ viewTasks = do
     then putStrLn "No tasks found."
     else mapM_ putStrLn $ zipWith (\i t -> show i ++ ". " ++ t) [1 :: Int ..] tasks
 
+-- Filter tasks by completion status
+viewFilteredTasks :: String -> IO ()
+viewFilteredTasks status = do
+  contents <- readFile "tasks.txt"
+  let tasks = lines contents
+      filteredTasks = filter (\t -> status `elem` words t) tasks
+  if null filteredTasks
+    then putStrLn $ "No " ++ status ++ " tasks found."
+    else mapM_ putStrLn $ zipWith (\i t -> show i ++ ". " ++ t) [1 :: Int ..] filteredTasks
+
 -- Edit a task
 editTask :: Int -> String -> String -> IO ()
 editTask num newDesc newPriority = do

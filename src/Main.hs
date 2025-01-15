@@ -11,7 +11,7 @@ main = do
 
 loop :: IO ()
 loop = do
-  putStr "Enter command (add/view/edit/delete/complete/exit/help): "
+  putStr "Enter command (add/view/filter/edit/delete/complete/exit/help): "
   hFlush stdout
   input <- getLine
   isLooping <- handleInput input
@@ -34,6 +34,12 @@ handleInput "add" = do
   pure True
 handleInput "view" = do
   TM.viewTasks
+  pure True
+handleInput "filter" = do
+  putStr "Filter by status (Complete/Incomplete): "
+  hFlush stdout
+  status <- getLine
+  TM.viewFilteredTasks status
   pure True
 handleInput "edit" = do
   putStr "Enter task number to edit: "

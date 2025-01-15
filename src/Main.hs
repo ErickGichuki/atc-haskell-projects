@@ -41,6 +41,12 @@ handleInput "edit" = do
   desc <- getLine
   TM.editTask (read num) desc
   pure True
+handleInput "delete" = do
+  putStr "Enter task number to delete: "
+  hFlush stdout
+  num <- getLine
+  TM.deleteTask (read num)
+  pure True
 handleInput "complete" = do
   putStr "Enter task number to mark as complete: "
   hFlush stdout

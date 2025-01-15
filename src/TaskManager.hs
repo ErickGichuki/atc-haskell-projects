@@ -12,8 +12,8 @@ ensureTasksFile = do
     else return ()
 
 -- Add a new task
-addTask :: String -> IO ()
-addTask desc = appendFile "tasks.txt" (desc ++ " | Incomplete\n") >> putStrLn "Task added!"
+addTask :: String -> String -> IO ()
+addTask desc priority = appendFile "tasks.txt" (desc ++ " | " ++ priority ++ " | Incomplete\n") >> putStrLn "Task added!"
 
 -- View all tasks
 viewTasks :: IO ()
@@ -25,14 +25,14 @@ viewTasks = do
     else mapM_ putStrLn $ zipWith (\i t -> show i ++ ". " ++ t) [1 :: Int ..] tasks
 
 -- Edit a task
-editTask :: Int -> String -> IO ()
-editTask num newDesc = do
+editTask :: Int -> String -> String -> IO ()
+editTask num newDesc newPriority = do
   contents <- readFile "tasks.txt"
   let tasks = lines contents
   if num <= 0 || num > length tasks
     then putStrLn "Invalid task number."
     else do
-      let updatedTasks = unlines $ map (\(i, t) -> if i == num then newDesc ++ " | Incomplete" else t) $ zip [1 :: Int ..] tasks
+      let updatedTasks = unlines $ map (\(i, t) -> if i == num then newDesc ++ " | " ++ newPriority ++ " | Incomplete" else t) $ zip [1 :: Int ..] tasks
       writeFile "tasks.txt" updatedTasks
       putStrLn "Task updated!"
 

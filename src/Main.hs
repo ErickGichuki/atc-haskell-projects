@@ -27,16 +27,19 @@ handleInput "add" = do
   putStr "Enter task description: "
   hFlush stdout
   desc <- getLine
+  putStr "Enter status (Active/Upcoming/Complete): "
+  hFlush stdout
+  status <- getLine
   putStr "Enter priority (High/Medium/Low): "
   hFlush stdout
   priority <- getLine
-  TM.addTask desc priority
+  TM.addTask desc status priority
   pure True
 handleInput "view" = do
   TM.viewTasks
   pure True
 handleInput "filter" = do
-  putStr "Filter by status (Complete/Incomplete): "
+  putStr "Filter by status (Active/Upcoming/Complete): "
   hFlush stdout
   status <- getLine
   TM.viewFilteredTasks status
@@ -48,10 +51,13 @@ handleInput "edit" = do
   putStr "Enter new description: "
   hFlush stdout
   desc <- getLine
+  putStr "Enter new status (Active/Upcoming/Complete): "
+  hFlush stdout
+  status <- getLine
   putStr "Enter new priority (High/Medium/Low): "
   hFlush stdout
   priority <- getLine
-  TM.editTask (read num) desc priority
+  TM.editTask (read num) desc status priority
   pure True
 handleInput "delete" = do
   putStr "Enter task number to delete: "
